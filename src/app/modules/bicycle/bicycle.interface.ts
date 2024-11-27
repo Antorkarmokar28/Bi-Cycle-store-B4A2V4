@@ -6,4 +6,5 @@ export interface IBicycle {
   description: string;
   quantity: number;
   inStock: boolean;
+  createdAt: number;
 }

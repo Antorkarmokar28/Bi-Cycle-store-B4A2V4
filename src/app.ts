@@ -1,6 +1,20 @@
-import express, { Request, Response } from 'express';
-const app = express();
+import cors from 'cors';
+import express, { Application, Request, Response } from 'express';
+import { bicycleRoute } from './app/modules/bicycle/bicycle.route';
+const app: Application = express();
+
+//using parser
+app.use(express.json());
+app.use(cors());
+
+// hit the application route
+app.use('/api', bicycleRoute);
+
+// if server is running on rout then this function exicuted
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello Bi-Cycle-store-B4A2V4Bicycle server');
+  res.send({
+    status: true,
+    message: 'Server is run',
+  });
 });
 export default app;
