@@ -1,44 +1,47 @@
 import { Request, Response } from 'express';
 import { bicycleService } from './bicycle.service';
-// will handling request and response manage
+import BicycleValidationSchema from './bicycle.validation';
+// This function manage request and response for post data into mongodb database
 const createBicycle = async (req: Request, res: Response) => {
   try {
     // receive data in payload from client
     const payload = req.body;
-    const result = await bicycleService.createBicycleIntoDB(payload);
+    //validation data using zod
+    const zodParseData = BicycleValidationSchema.parse(payload);
+    const result = await bicycleService.createBicycleIntoDB(zodParseData);
     res.status(200).json({
       success: true,
-      message: 'Bicycle is created succesfully',
+      message: 'Bicycle created successfully',
       data: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Somthing is went worn',
+      message: 'Validation failed',
       error,
     });
   }
 };
 
-//the function hit the bicycle service and get bicycle all data
+// This function manage request and response for get all data from mongodb database
 const getAllBicycle = async (req: Request, res: Response) => {
   try {
     const result = await bicycleService.getAllBicyclefromDB();
     res.status(200).json({
-      success: true,
-      message: 'Bicycle are retrieved successfully',
+      message: 'Bicycles retrieved successfully',
+      status: true,
       data: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng',
+      message: 'Validation failed',
       error,
     });
   }
 };
 
-//the function hit the bicycle service and get a bicycle single data
+// This function manage request and response for get signle data from mongodb database
 const getsingleBicycle = async (req: Request, res: Response) => {
   try {
     // get id from bicycle route
@@ -46,14 +49,14 @@ const getsingleBicycle = async (req: Request, res: Response) => {
     // this function hit the bicycle service and get a single bicycle data
     const result = await bicycleService.getSingleBicycleFromDB(_id);
     res.status(200).json({
-      success: true,
-      message: 'Bicycle is retrieved successfully',
+      message: 'Bicycles retrieved successfully',
+      status: true,
       data: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng',
+      message: 'Validation failed',
       error,
     });
   }
@@ -62,17 +65,17 @@ const getsingleBicycle = async (req: Request, res: Response) => {
 const updateBicyclelData = async (req: Request, res: Response) => {
   try {
     const { _id } = req.params;
-    const data = req.body;
-    const result = await bicycleService.getUpdateBicycleData(_id, data);
+    const updateData = req.body;
+    const result = await bicycleService.getUpdateBicycleData(_id, updateData);
     res.status(200).json({
-      success: true,
-      message: 'Bicycle data is update successfully',
+      message: 'Bicycle updated successfully',
+      status: true,
       data: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng',
+      message: 'Validation failed',
       error,
     });
   }
@@ -83,14 +86,14 @@ const deleteBicycleData = async (req: Request, res: Response) => {
     const { _id } = req.params;
     await bicycleService.getDeleteBicycleData(_id);
     res.status(200).json({
-      success: true,
-      message: 'Bicycle data deleted is successfully',
+      message: 'Bicycle deleted successfully',
+      status: true,
       data: {},
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng',
+      message: 'Validation failed',
       error,
     });
   }

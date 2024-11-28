@@ -4,12 +4,12 @@ const router = express.Router();
 // create post
 router.post('/products', bicycleController.createBicycle);
 // get all data
-router.get('/', bicycleController.getAllBicycle);
+router.get('/products', bicycleController.getAllBicycle);
 //get a single data
-router.get('/:_id', bicycleController.getsingleBicycle);
+router.get('/products/:_id', bicycleController.getsingleBicycle);
 // update data
-router.put('/:_id', bicycleController.updateBicyclelData);
+router.put('/products/:_id', bicycleController.updateBicyclelData);
 // delete data
-router.delete('/:_id', bicycleController.deleteBicycleData);
+router.delete('/products/:_id', bicycleController.deleteBicycleData);
 // export this variable for use another file
 export const bicycleRoute = router;
