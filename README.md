@@ -63,6 +63,6 @@ npm start
 **5. Access the Application Open your browser and navigate to:**
 
 ```bash
-http://localhost:3000
+http://localhost:5000
 
 ```
