@@ -18,7 +18,25 @@ const createBicycleOrderIntoDb = async (orderData: IOrderData) => {
   const result = await Order.create(orderData);
   return result;
 };
-
+// will total revenue into mongodb databse
+const calculateTotalRevenue = async (): Promise<number> => {
+  const result = await Order.aggregate([
+    {
+      $project: {
+        totalOrderPrice: { $multiply: ['$quantity', '$totalPrice'] },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: '$totalOrderPrice' },
+      },
+    },
+  ]);
+  // If result exists, return the total revenue, else return 0
+  return result.length > 0 ? result[0].totalRevenue : 0;
+};
 export const orderBicycleService = {
   createBicycleOrderIntoDb,
+  calculateTotalRevenue,
 };

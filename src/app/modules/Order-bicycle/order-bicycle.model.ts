@@ -6,10 +6,18 @@ const orderResponsonseSchema = new Schema<IOrderData>(
     email: {
       type: String,
       required: true,
+      // will using validation for email format
+      validate: {
+        validator: function (value: string): boolean {
+          // Regex for validating email format
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        },
+        message: 'Give me valid email',
+      },
     },
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      // ref: 'Product',
+      // ref: 'Bicycle',
       required: true,
     },
     quantity: {
