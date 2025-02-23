@@ -1,16 +1,15 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import router from './app/routes';
+import globalErrorHandeling from './app/middlewares/globalErrorHandeling';
+import notFound from './app/middlewares/notFound';
 
 const app: Application = express();
-
 //using parser
 app.use(express.json());
 app.use(cors());
-
 // hit the application product route
 app.use('/api', router);
-
 // if server is running on rout then this function exicuted
 app.get('/', (req: Request, res: Response) => {
   res.send({
@@ -18,4 +17,8 @@ app.get('/', (req: Request, res: Response) => {
     message: 'Server is run',
   });
 });
+// global error handeler
+app.use(globalErrorHandeling);
+// not found router handeler
+app.use(notFound);
 export default app;
