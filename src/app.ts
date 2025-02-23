@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
-import { bicycleRoute } from './app/modules/bicycle/bicycle.route';
-import { bicyclOrderRouter } from './app/modules/Order-bicycle/order-bicycle.route';
+import router from './app/routes';
+
 const app: Application = express();
 
 //using parser
@@ -9,10 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // hit the application product route
-app.use('/api', bicycleRoute);
-
-//hit the application product order route
-app.use('/api', bicyclOrderRouter);
+app.use('/api', router);
 
 // if server is running on rout then this function exicuted
 app.get('/', (req: Request, res: Response) => {
