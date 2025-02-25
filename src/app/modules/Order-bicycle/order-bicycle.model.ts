@@ -15,11 +15,12 @@ const orderResponsonseSchema = new Schema<IOrderData>(
         message: 'Give me valid email',
       },
     },
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      // ref: 'Bicycle',
-      required: true,
-    },
+    product: [
+      {
+        bicycleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Bicycle' },
+        quantity: { type: Number, required: true },
+      },
+    ],
     quantity: {
       type: Number,
       required: true,
@@ -28,6 +29,11 @@ const orderResponsonseSchema = new Schema<IOrderData>(
     totalPrice: {
       type: Number,
       required: true,
+    },
+    status: {
+      type: String,
+      default: 'Pending',
+      enum: ['Pending', 'Completed', 'Cancelled'],
     },
   },
   // Automatically adds createdAt and updatedAt fields

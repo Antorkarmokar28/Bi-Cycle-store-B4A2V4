@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose';
-import { IUser } from './user.interface';
+import { IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
-const userRegiStrationSchema = new Schema<IUser>(
+const userRegiStrationSchema = new Schema<IUser, UserModel>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: 0 },
     role: { type: String, default: 'customer', enum: ['customer', 'admin'] },
   },
   {
@@ -27,5 +27,17 @@ userRegiStrationSchema.post('save', async function (doc, next) {
   doc.password = '';
   next();
 });
-
-export const User = model<IUser>('User', userRegiStrationSchema);
+// user find by email with static method
+userRegiStrationSchema.statics.isUserExitsByEmail = async function (
+  email: string,
+) {
+  return await User.findOne({ email }).select('+password');
+};
+// user password match checkin with static method
+userRegiStrationSchema.statics.isPasswordMatched = async function (
+  planeTextPassword,
+  hashedPassword,
+) {
+  return await bcrypt.compare(planeTextPassword, hashedPassword);
+};
+export const User = model<IUser, UserModel>('User', userRegiStrationSchema);

@@ -7,4 +7,5 @@ export interface IOrderData extends Document {
   totalPrice: number;
   createdAt: Date;
   updatedAt: Date;
+  status: string;
 }
