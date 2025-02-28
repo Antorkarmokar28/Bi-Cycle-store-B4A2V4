@@ -9,6 +9,7 @@ router.post(
   validationRequest(AuthValidation.authValidationSchema),
   AuthController.userLogin,
 );
+
 router.post(
   '/refresh-token',
   validationRequest(AuthValidation.refreshTokenValidationSchema),

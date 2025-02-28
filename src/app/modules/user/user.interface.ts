@@ -15,6 +15,10 @@ export interface UserModel extends Model<IUser> {
     planePassword: string,
     hashedPassword: string,
   ): Promise<IUser>;
+  isPasswordIssuedBeforeChange(
+    passwordChangedTimestamp: Date,
+    passwordIssuedTimestamp: number,
+  ): boolean;
 }
 
 export type TUserRole = keyof typeof User_Role;

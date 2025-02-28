@@ -14,6 +14,7 @@ const orderResponsonseSchema = new Schema<IOrderData>(
         },
         message: 'Give me valid email',
       },
+      ref: 'User',
     },
     product: [
       {

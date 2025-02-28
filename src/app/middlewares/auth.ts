@@ -24,12 +24,19 @@ const auth = (...requiredRole: TUserRole[]) => {
         config.jwt_access_secret as string,
       ) as JwtPayload;
 
-      const { role, userEmail } = decoded;
+      const { role, userEmail, iat } = decoded;
       //find by user with email
       const user = await User.isUserExitsByEmail(userEmail);
       //checking user is exists
       if (!user) {
         throw new AppError(StatusCodes.NOT_FOUND, 'User is not found!');
+      }
+      // checke if passowrd change time
+      if (
+        user.passwordChangedAt &&
+        User.isPasswordIssuedBeforeChange(user.passwordChangedAt, iat as number)
+      ) {
+        throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not authorized!');
       }
       //set the user role in required role
       if (requiredRole && !requiredRole.includes(role)) {

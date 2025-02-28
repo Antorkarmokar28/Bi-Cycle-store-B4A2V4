@@ -4,6 +4,7 @@ import { User } from '../user/user.model';
 import { ILoginUser } from './auth.interface';
 import config from '../../config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+
 const userloginIntoDB = async (payload: ILoginUser) => {
   //find by user with email
   const user = await User.isUserExitsByEmail(payload.email);
@@ -34,6 +35,7 @@ const userloginIntoDB = async (payload: ILoginUser) => {
   return { accessToken, refreshToken };
 };
 
+//user create refresh token access
 const refreshToken = async (token: string) => {
   // if the token sent from the client
   if (!token) {

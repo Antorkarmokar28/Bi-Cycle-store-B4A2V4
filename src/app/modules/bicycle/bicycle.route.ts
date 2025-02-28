@@ -1,8 +1,14 @@
 import express from 'express';
 import { bicycleController } from './bicycle.controller';
+import auth from '../../middlewares/auth';
+import { User_Role } from '../user/user.constant';
 const router = express.Router();
 // create post
-router.post('/products', bicycleController.createBicycle);
+router.post(
+  '/products',
+  auth(User_Role.admin),
+  bicycleController.createBicycle,
+);
 // get all data
 router.get('/products', bicycleController.getAllBicycle);
 //get a single data
