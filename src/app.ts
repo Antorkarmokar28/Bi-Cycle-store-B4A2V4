@@ -10,7 +10,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: ['http://localhost:5000/'] }));
-// hit the application product route
+// hit the application route
 app.use('/api', router);
 // if server is running on rout then this function exicuted
 app.get('/', (req: Request, res: Response) => {

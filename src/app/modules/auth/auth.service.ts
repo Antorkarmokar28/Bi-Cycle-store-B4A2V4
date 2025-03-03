@@ -92,12 +92,11 @@ const forgetPassword = async (userEmail: string) => {
   const resetUILink = `${config.reset_pass_ui_link}?email=${user.email}&token=${resetToken}`;
 
   sendEmail(user.email, resetUILink);
-  console.log(resetUILink);
 };
 
 const resetPassword = async (
   payload: { email: string; newPassword: string },
-  token: string,
+  token: string | undefined,
 ) => {
   //find by user with email
   const user = await User.isUserExitsByEmail(payload.email);
@@ -107,7 +106,7 @@ const resetPassword = async (
   }
   //check if the token is the valid
   const decoded = jwt.verify(
-    token,
+    token as string,
     config.jwt_access_secret as string,
   ) as JwtPayload;
 
