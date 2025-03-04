@@ -1,6 +1,8 @@
 import multer from 'multer';
 import path from 'path';
 import { v2 as cloudinary } from 'cloudinary';
+import config from '../config';
+import fs from 'fs';
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads');
@@ -21,6 +23,12 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage: storage });
 
+cloudinary.config({
+  cloud_name: config.cloud_name,
+  api_key: config.api_key,
+  api_secret: config.api_secret,
+});
+
 export const sendImageCloudinary = (imageName: string, path: string) => {
   return new Promise((resolve, rejects) => {
     cloudinary.uploader.upload(
@@ -30,7 +38,15 @@ export const sendImageCloudinary = (imageName: string, path: string) => {
         if (err) {
           rejects(err);
         }
+        //delete a file asynchronously
         resolve(result);
+        fs.unlink(path, (err) => {
+          if (err) {
+            rejects(err);
+          } else {
+            console.log('file is deleted');
+          }
+        });
       },
     );
   });

@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import AppError from '../../error/appError';
 import { IUser } from './user.interface';
 import { User } from './user.model';
-// import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
+import { sendImageCloudinary } from '../../utils/fileUploads';
 
 const registrationUserIntoDB = async (file: any, payload: IUser) => {
   const isUserExists = await User.findOne({
@@ -16,12 +16,12 @@ const registrationUserIntoDB = async (file: any, payload: IUser) => {
       'This email address is already exists',
     );
   }
-  // // storage image into cloudinary
-  // const imageName = payload?.email;
-  // const path = file?.path;
-  // const { secure_url } = sendImageToCloudinary(imageName, path);
+  // storage image into cloudinary
+  const imageName = payload?.email;
+  const path = file?.path;
+  const { secure_url }: any = await sendImageCloudinary(imageName, path);
   // create user into db
-  // payload.profileImage = secure_url;
+  payload.profileImage = secure_url;
   const result = await User.create(payload);
   return result;
 };
