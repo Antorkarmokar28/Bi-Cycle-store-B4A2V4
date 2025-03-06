@@ -25,8 +25,9 @@ const createBicycle = async (req: Request, res: Response) => {
 
 // This function manage request and response for get all data from mongodb database
 const getAllBicycle = async (req: Request, res: Response) => {
+  const query = req.query;
   try {
-    const result = await bicycleService.getAllBicyclefromDB();
+    const result = await bicycleService.getAllBicyclefromDB(query);
     res.status(200).json({
       message: 'Bicycles retrieved successfully',
       status: true,

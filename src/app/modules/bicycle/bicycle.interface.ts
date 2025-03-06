@@ -2,7 +2,7 @@ export interface IBicycle {
   name: string;
   brand: string;
   price: number;
-  type: string;
+  category: string;
   description: string;
   quantity: number;
   inStock: boolean;

@@ -6,7 +6,7 @@ const bicycleSchema = new Schema<IBicycle>(
     name: { type: String, required: true },
     brand: { type: String, required: true },
     price: { type: Number, required: true },
-    type: {
+    category: {
       type: String,
       required: true,
       enum: ['Mountain', 'Road', 'Hybrid', 'BMX', 'Electric'],
