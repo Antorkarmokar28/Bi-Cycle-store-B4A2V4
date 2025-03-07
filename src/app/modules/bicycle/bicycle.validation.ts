@@ -9,6 +9,7 @@ const bicycleValidationSchema = z.object({
     }),
   brand: z.string().min(1, { message: 'Brand is required' }),
   price: z.number().min(0, { message: 'Price must be a positive number' }),
+  model: z.string({ required_error: 'Model is required' }),
   category: z.enum(['Mountain', 'Road', 'Hybrid', 'BMX', 'Electric'], {
     message: 'Invalid bike type',
   }),

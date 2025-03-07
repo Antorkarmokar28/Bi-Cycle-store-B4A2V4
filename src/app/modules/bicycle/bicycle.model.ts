@@ -11,6 +11,7 @@ const bicycleSchema = new Schema<IBicycle>(
       required: true,
       enum: ['Mountain', 'Road', 'Hybrid', 'BMX', 'Electric'],
     },
+    model: { type: String, required: true },
     description: { type: String, required: true },
     quantity: { type: Number, required: true },
     inStock: { type: Boolean, default: true },

@@ -13,12 +13,14 @@ app.use(cors({ origin: ['http://localhost:5000/'] }));
 // hit the application route
 app.use('/api', router);
 // if server is running on rout then this function exicuted
-app.get('/', (req: Request, res: Response) => {
+const testServer = async (req: Request, res: Response) => {
   res.send({
     status: true,
     message: 'Server is run',
   });
-});
+};
+app.get('/', testServer);
+
 // global error handeler
 app.use(globalErrorHandeling);
 // not found router handeler
