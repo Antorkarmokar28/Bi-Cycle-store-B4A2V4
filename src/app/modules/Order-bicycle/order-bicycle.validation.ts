@@ -1,18 +1,14 @@
-// import { z } from 'zod';
+import { z } from 'zod';
 // using zod for order product validation
-// export const createOrderValidation = z.object({
-//   email: z
-//     .string({ required_error: 'Email is required' })
-//     .email('Invalid email format'),
-//   product: z
-//     .string({ required_error: 'Product ID is required' })
-//     .refine((val) => /^[0-9a-fA-F]{24}$/.test(val), {
-//       message: 'Invalid Product ID format',
-//     }), // Validates a MongoDB ObjectId
-//   quantity: z
-//     .number({ required_error: 'Quantity is required' })
-//     .min(1, { message: 'Quantity must be at least 1' }),
-//   totalPrice: z
-//     .number({ required_error: 'Total Price is required' })
-//     .positive({ message: 'Total Price must be a positive number' }),
-// });
+export const OrderSchema = z.object({
+  body: z.object({
+    email: z.string().email({ message: 'Give me valid email' }),
+    product: z.string().regex(/^[a-fA-F0-9]{24}$/, 'Invalid ObjectId'),
+    quantity: z
+      .number()
+      .int()
+      .min(1, { message: 'Quantity must be at least 1' }),
+    totalPrice: z.number(),
+    status: z.enum(['Pending', 'Completed', 'Cancelled']).default('Pending'),
+  }),
+});

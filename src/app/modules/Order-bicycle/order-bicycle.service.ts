@@ -1,22 +1,33 @@
+import { StatusCodes } from 'http-status-codes';
+import AppError from '../../error/appError';
 import { Bicycle } from '../bicycle/bicycle.model';
 import { IOrderData } from './order-bicycle.interface';
 import Order from './order-bicycle.model';
+
 // Bicycle order create
-const createBicycleOrderIntoDb = async (orderData: IOrderData) => {
-  const product = await Bicycle.findById(orderData.product);
+const createBicycleOrderIntoDb = async (
+  userEmail: string,
+  payload: IOrderData,
+) => {
+  let totalPrice = 0;
+  const product = await Bicycle.findById(payload.product);
   if (!product) {
-    throw new Error('Product not found');
+    throw new AppError(StatusCodes.NOT_FOUND, 'Product is not found');
   }
-  // Check stock availability
-  if (product.quantity < orderData.quantity) {
-    throw new Error('Insufficient stock');
+  if (product.quantity < payload.quantity) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'Insufficient stock');
   }
-  // check the product quantity and update the inStock status
-  product.quantity -= orderData.quantity;
+  product.quantity -= payload.quantity;
   product.inStock = product.quantity > 0;
-  await product.save();
-  const result = await Order.create(orderData);
-  return result;
+  totalPrice += product.price * payload.quantity;
+  const order = await Order.create({
+    email: userEmail,
+    product,
+    quantity: payload.quantity,
+    totalPrice,
+    status: payload.status,
+  });
+  return order;
 };
 // will total revenue into mongodb databse
 const calculateTotalRevenue = async (): Promise<number> => {
