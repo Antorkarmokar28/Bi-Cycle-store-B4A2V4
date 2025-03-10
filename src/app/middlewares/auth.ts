@@ -33,9 +33,9 @@ const auth = (...requiredRole: TUserRole[]) => {
       }
       //set the user role in required role
       if (requiredRole && !requiredRole.includes(role)) {
-        throw new AppError(StatusCodes.UNAUTHORIZED, 'invalid credential');
+        throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not authorized!');
       }
-      req.user = decoded as JwtPayload;
+      req.user = user;
       next();
     },
   );

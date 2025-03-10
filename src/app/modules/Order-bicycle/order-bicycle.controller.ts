@@ -5,10 +5,10 @@ import sendResponse from '../../utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 // This function manage request and response for post order data into mongodb database
 const createBicycleOrder = catchAsynch(async (req, res) => {
-  const userEmail = req.user.userEmail;
+  const user = req.user;
   const payload = req.body;
   const result = await orderBicycleService.createBicycleOrderIntoDb(
-    userEmail,
+    user,
     payload,
   );
   sendResponse(res, {

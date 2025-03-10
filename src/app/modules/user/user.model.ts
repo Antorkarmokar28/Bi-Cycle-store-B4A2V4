@@ -8,6 +8,9 @@ const userRegiStrationSchema = new Schema<IUser, UserModel>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: 0 },
     profileImage: { type: String },
+    address: { type: String, default: 'N/A' },
+    phone: { type: String, default: 'N/A' },
+    city: { type: String, default: 'N/A' },
     role: { type: String, default: 'customer', enum: ['customer', 'admin'] },
   },
   {

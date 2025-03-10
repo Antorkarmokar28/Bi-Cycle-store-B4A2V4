@@ -7,6 +7,9 @@ export interface IUser {
   email: string;
   password: string;
   profileImage?: string;
+  address?: string;
+  phone?: string;
+  city?: string;
   role: 'customer' | 'admin';
 }
 

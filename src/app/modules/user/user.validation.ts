@@ -6,6 +6,9 @@ const userRegistrationSchema = z.object({
     email: z.string().email('Invalid email format'),
     password: z.string().min(6, 'Password must be at least 6 characters long'),
     profileImage: z.string().optional(),
+    address: z.string(),
+    phone: z.string(),
+    city: z.string(),
     role: z.enum(['customer', 'admin']).default('customer'),
   }),
 });

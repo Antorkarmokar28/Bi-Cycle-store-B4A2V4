@@ -3,10 +3,12 @@ import AppError from '../../error/appError';
 import { Bicycle } from '../bicycle/bicycle.model';
 import { IOrderData } from './order-bicycle.interface';
 import Order from './order-bicycle.model';
+// import { IUser } from '../user/user.interface';
+import { JwtPayload } from 'jsonwebtoken';
 
 // Bicycle order create
 const createBicycleOrderIntoDb = async (
-  userEmail: string,
+  user: JwtPayload,
   payload: IOrderData,
 ) => {
   let totalPrice = 0;
@@ -21,12 +23,25 @@ const createBicycleOrderIntoDb = async (
   product.inStock = product.quantity > 0;
   totalPrice += product.price * payload.quantity;
   const order = await Order.create({
-    email: userEmail,
+    email: user.email,
     product,
     quantity: payload.quantity,
     totalPrice,
     status: payload.status,
   });
+
+  // payment integration
+  const shurjopayPayload = {
+    amount: totalPrice,
+    order_id: order._id,
+    currency: 'BDT',
+    customer_name: user.name,
+    customer_address: user.address,
+    customer_email: user.email,
+    customer_phone: user.phone,
+    customer_city: user.city,
+  };
+
   return order;
 };
 // will total revenue into mongodb databse
