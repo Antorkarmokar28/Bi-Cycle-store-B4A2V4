@@ -10,6 +10,7 @@ const createBicycleOrder = catchAsynch(async (req, res) => {
   const result = await orderBicycleService.createBicycleOrderIntoDb(
     user,
     payload,
+    req.ip!,
   );
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
@@ -35,7 +36,33 @@ const getTotalRevenue = async (req: Request, res: Response) => {
     });
   }
 };
+
+//verify payment controller
+const verifyPayment = catchAsynch(async (req, res) => {
+  const result = await orderBicycleService.verifyPayment(
+    req.query.order_id as string,
+  );
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Order verified successfully',
+    data: result,
+  });
+});
+
+const getOrder = catchAsynch(async (req, res) => {
+  const result = await orderBicycleService.getOrdersFromToDB();
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Orde retrieved successfully',
+    data: result,
+  });
+});
+
 export const bicycleOrderController = {
   createBicycleOrder,
   getTotalRevenue,
+  verifyPayment,
+  getOrder,
 };
