@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import QueryBuilder from '../../builder/queryBuilder';
+import { sendImageCloudinary } from '../../utils/fileUploads';
 import { bicycleSearchableFields } from './bicycle.constant';
 import { IBicycle } from './bicycle.interface';
 import { Bicycle } from './bicycle.model';
 // create an bicycle data in the mongodb database
-const createBicycleIntoDB = async (bicycle: IBicycle) => {
+const createBicycleIntoDB = async (file: any, bicycle: IBicycle) => {
+  // storage image into cloudinary
+  const imageName = bicycle?.name;
+  const path = file?.path;
+  const { secure_url }: any = await sendImageCloudinary(imageName, path);
+  bicycle.image = secure_url;
   const result = await Bicycle.create(bicycle);
   return result;
 };

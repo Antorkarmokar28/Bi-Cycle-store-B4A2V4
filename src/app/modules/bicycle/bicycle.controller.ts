@@ -1,27 +1,21 @@
 import { Request, Response } from 'express';
 import { bicycleService } from './bicycle.service';
-import BicycleValidationSchema from './bicycle.validation';
+import sendResponse from '../../utils/sendResponse';
+import { StatusCodes } from 'http-status-codes';
+import catchAsynch from '../../utils/catchAsync';
 // This function manage request and response for post data into mongodb database
-const createBicycle = async (req: Request, res: Response) => {
-  try {
-    // receive data in payload from client
-    const payload = req.body;
-    //validation data using zod
-    const zodParseData = BicycleValidationSchema.parse(payload);
-    const result = await bicycleService.createBicycleIntoDB(zodParseData);
-    res.status(200).json({
-      success: true,
-      message: 'Bicycle created successfully',
-      data: result,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Validation failed',
-      error,
-    });
-  }
-};
+const createBicycle = catchAsynch(async (req: Request, res: Response) => {
+  // receive data in payload from client
+  const payload = req.body;
+  //validation data using zod
+  const result = await bicycleService.createBicycleIntoDB(req.file, payload);
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'Bicycle created successfully',
+    data: result,
+  });
+});
 
 // This function manage request and response for get all data from mongodb database
 const getAllBicycle = async (req: Request, res: Response) => {

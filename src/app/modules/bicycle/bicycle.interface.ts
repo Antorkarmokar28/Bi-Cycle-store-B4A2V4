@@ -7,5 +7,5 @@ export interface IBicycle {
   description: string;
   quantity: number;
   inStock: boolean;
-  image: string;
+  image?: string;
 }

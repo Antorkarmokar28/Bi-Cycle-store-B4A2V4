@@ -15,7 +15,7 @@ const bicycleSchema = new Schema<IBicycle>(
     description: { type: String, required: true },
     quantity: { type: Number, required: true },
     inStock: { type: Boolean, default: true },
-    image: { type: String, required: true },
+    image: { type: String },
   },
   // Automatically adds createdAt and updatedAt fields
   {

@@ -3,6 +3,8 @@ import { bicycleController } from './bicycle.controller';
 import auth from '../../middlewares/auth';
 import { User_Role } from '../user/user.constant';
 import { upload } from '../../utils/fileUploads';
+import validationRequest from '../../middlewares/validationRequest';
+import bicycleValidationSchema from './bicycle.validation';
 const router = express.Router();
 // create post
 router.post(
@@ -13,6 +15,7 @@ router.post(
     req.body = JSON.parse(req.body.data);
     next();
   },
+  validationRequest(bicycleValidationSchema),
   bicycleController.createBicycle,
 );
 // get all data
